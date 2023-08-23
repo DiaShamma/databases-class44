@@ -5,6 +5,7 @@ const connection = mysql.createConnection({
   user: 'hyfuser',
   password: 'hyfpassword',
   database: 'world'
+
 });
 
 //*

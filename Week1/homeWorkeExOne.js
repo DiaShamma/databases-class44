@@ -1,25 +1,25 @@
 const mysql = require('mysql');
 
-// Create a connection to the database
+//*
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'hyfuser',
   password: 'hyfpassword',
 });
 
-// Create the meetup database
+//*
 connection.query('CREATE DATABASE IF NOT EXISTS meetup', (error) => {
   if (error) throw error;
   console.log('Database created or already exists');
 });
 
-// Connect to the meetup database
+//*
 connection.changeUser({ database: 'meetup' }, (error) => {
   if (error) throw error;
   console.log('Connected to meetup database');
 });
 
-// Create the Invitee table
+//*
 const createInviteeTable = `
   CREATE TABLE IF NOT EXISTS Invitee (
     invitee_no INT PRIMARY KEY,
@@ -33,7 +33,7 @@ connection.query(createInviteeTable, (error) => {
   console.log('Invitee table created or already exists');
 });
 
-// Create the Room table
+//*
 const createRoomTable = `
   CREATE TABLE IF NOT EXISTS Room (
     room_no INT PRIMARY KEY,
@@ -47,7 +47,7 @@ connection.query(createRoomTable, (error) => {
   console.log('Room table created or already exists');
 });
 
-// Create the Meeting table
+//*
 const createMeetingTable = `
   CREATE TABLE IF NOT EXISTS Meeting (
     meeting_no INT PRIMARY KEY,
@@ -63,7 +63,8 @@ connection.query(createMeetingTable, (error) => {
   console.log('Meeting table created or already exists');
 });
 
-// Insert data into tables
+
+//*
 const insertData = () => {
   // Insert data into Invitee table
   const inviteeData = [
@@ -77,11 +78,11 @@ const insertData = () => {
     console.log('Data inserted into Invitee table');
   });
 
-  // Insert data into Room table
+  //*
   const roomData = [
     [101, 'Conference Room A', 1],
     [102, 'Meeting Room B', 1],
-    // ... (insert more rows)
+
   ];
   const roomQuery = 'INSERT INTO Room (room_no, room_name, floor_number) VALUES ?';
   connection.query(roomQuery, [roomData], (error) => {
@@ -89,12 +90,14 @@ const insertData = () => {
     console.log('Data inserted into Room table');
   });
 
-  // Insert data into Meeting table
+  //*
   const meetingData = [
     [1, 'Project Kickoff', '2023-08-22 09:00:00', '2023-08-22 11:00:00', 101],
     [2, 'Team Standup', '2023-08-23 10:00:00', '2023-08-23 10:30:00', 102],
-    // ... (insert more rows)
+
   ];
+
+  //*
   const meetingQuery = 'INSERT INTO Meeting (meeting_no, meeting_title, starting_time, ending_time, room_no) VALUES ?';
   connection.query(meetingQuery, [meetingData], (error) => {
     if (error) throw error;
@@ -102,7 +105,8 @@ const insertData = () => {
   });
 };
 
-// Insert data into tables and close the connection
+
+//*
 insertData();
 connection.end((error) => {
   if (error) throw error;
