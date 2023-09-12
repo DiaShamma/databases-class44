@@ -69,7 +69,7 @@ async function transferMoney(fromAccountNumber, toAccountNumber, amount, remark)
   }
 }
 
-// Example usage:
+//usage:
 transferMoney(101, 102, 1000, 'Payment for services');
 
 
