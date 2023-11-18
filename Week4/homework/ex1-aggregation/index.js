@@ -1,15 +1,19 @@
+require('dotenv').config();
 const fs = require('fs');
-const parse = require('csv-parse');
+const { parse } = require('csv-parse/sync');
 const { MongoClient } = require('mongodb');
 
+const mongoURL = process.env.MONGO_URL;
+const dbName = process.env.DB_NAME;
 
 
-const mongoURL = 'mongodb+srv://dshamma89:<password>@cluster0.iy4atgb.mongodb.net/';
-const dbName = 'Countries';
+
+// const mongoURL = 'mongodb+srv://dshamma89:<password>@cluster0.iy4atgb.mongodb.net/'; " Moved to .env file"
+
 
 
 async function insertCSVData(filePath, dbName, collectionName) {
-  const client = new MongoClient(mongoURL, { useNewUrlParser: true });
+  const client = new MongoClient(mongoURL);
 
 
   try {
@@ -20,12 +24,8 @@ async function insertCSVData(filePath, dbName, collectionName) {
     const collection = db.collection(collectionName);
 
     const data = fs.readFileSync(filePath, 'utf8');
-    const records = await new Promise((resolve, reject) => {
-      parse(data, { columns: true }, (err, records) => {
-        if (err) reject(err);
-        else resolve(records);
-      });
-    });
+    const records = parse(data, { columns: true });
+
 
     const result = await collection.insertMany(records);
     console.log(`${result.insertedCount} records inserted.`);
@@ -37,7 +37,7 @@ async function insertCSVData(filePath, dbName, collectionName) {
 }
 
 async function getTotalPopulationByCountryAndYear(dbName, collectionName, country) {
-  const client = new MongoClient('mongodb://localhost:27017', { useNewUrlParser: true });
+  const client = new MongoClient('mongodb://localhost:27017');
 
   try {
     await client.connect();
@@ -105,7 +105,7 @@ async function getContinentInformation(dbName, collectionName, year, age) {
 }
 
 // Usage
-insertCSVData('population_data.csv', dbName, 'population_data')
+insertCSVData('population_pyramid_1950-2022.csv', dbName, 'population_data')
   .then(() => {
     return getTotalPopulationByCountryAndYear(dbName, 'population_data', 'Netherlands');
   })

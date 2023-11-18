@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "csv-parse": "^5.5.0",
+    "dotenv": "^16.3.1",
     "fs": "^0.0.1-security",
-    "mongodb": "^6.0.0"
+    "mongodb": "^6.3.0"
   }
 }
